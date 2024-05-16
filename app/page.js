@@ -1,95 +1,73 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+
+import { BUG_RESOLVED, BUG_UNRESOLVED, BUG_WORKAROUND } from "@/bugs/constants";
+import { BUG_LIST } from "@/bugs/list";
+import ReExt from "@gusmano/reext";
+import { useRouter } from "next/navigation";
+import { useMemo } from "react";
 
 export default function Home() {
+  const router = useRouter();
+
+  const bugMetaList = useMemo(
+    () => BUG_LIST.map(({ BUG_META }) => BUG_META),
+    []
+  );
+
+  const getBugPathFromRecord = (record) => {
+    return `/bugs/${record.get("xtype")}/${record.get("path")}`;
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    <ReExt
+      xtype="grid"
+      config={{
+        title: "ReExt Issue List",
+        store: {
+          data: bugMetaList,
+          sorters: [{ property: "resolved", direction: "ASC" }],
+          fields: ["xtype", "path", "title", "description", "resolved"],
+        },
+        tooltip: true,
+        columns: [
+          { text: "Title", dataIndex: "title", flex: 1 },
+          {
+            text: "Description",
+            dataIndex: "description",
+            flex: 1,
+          },
+          { text: "xtype", dataIndex: "xtype", flex: 1 },
+          {
+            text: "Path",
+            flex: 1,
+            renderer: (_value, _metaData, record) => {
+              return getBugPathFromRecord(record);
+            },
+          },
+          {
+            text: "Resolved",
+            dataIndex: "resolved",
+            flex: 1,
+            renderer: (value) => {
+              switch (value) {
+                case BUG_RESOLVED:
+                  return "✅ Resolved";
+                case BUG_UNRESOLVED:
+                  return "❌ Unresolved";
+                case BUG_WORKAROUND:
+                  return "⚠️ Workaround";
+                default:
+                  return "Unknown";
+              }
+            },
+          },
+        ],
+        listeners: {
+          itemdblclick: (_grid, record) => {
+            router.push(getBugPathFromRecord(record));
+          },
+        },
+      }}
+    />
   );
 }
