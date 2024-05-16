@@ -20,9 +20,13 @@
  export const BUG_META = {
     path: "ExampleBug.js", // Replace
     xtype: "tabpanel", // Replace
+    version: "7.7.0", // Replace
     title: "Static + Dynamic TabPanel", // Replace
     description:
       "Dynamic tabs are not rendered correctly when there's also a static Tab.", // Replace
+    faq: [
+      // { question: "example?", answer: null },
+    ],
     resolved: BUG_UNRESOLVED,
   };
 
