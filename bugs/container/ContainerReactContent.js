@@ -5,6 +5,7 @@ import { BUG_UNRESOLVED } from "../constants";
 
 export const BUG_META = {
   path: "ReactContent.js",
+  version: "7.7.0",
   xtype: "container",
   title: "React content inside container",
   description:

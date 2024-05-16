@@ -37,6 +37,7 @@ export default function Home() {
             flex: 1,
           },
           { text: "xtype", dataIndex: "xtype", flex: 1 },
+          { text: "version", dataIndex: "version", flex: 1 },
           {
             text: "Path",
             flex: 1,

@@ -7,6 +7,7 @@ import { BUG_WORKAROUND } from "../constants";
 export const BUG_META = {
   path: "DynamicTabRender.js",
   xtype: "tabpanel",
+  version: "7.7.0",
   title: "Static + Dynamic TabPanel",
   description:
     "Dynamic tabs are not rendered correctly when there's also a static Tab. Also, first tab is not active.",

@@ -6,6 +6,7 @@ import { BUG_UNRESOLVED } from "../constants";
 export const BUG_META = {
   path: "WindowDimensions.js",
   xtype: "window",
+  version: "7.7.0",
   title: "Window Dimensions",
   description: `Window dimensions are not computed correctly and width/height config do not work.`,
   resolved: BUG_UNRESOLVED,
